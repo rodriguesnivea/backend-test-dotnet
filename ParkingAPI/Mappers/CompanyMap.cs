@@ -10,6 +10,8 @@ namespace ParkingAPI.Mappers
 {
     public class CompanyMap
     {
+
+        //add verificações
         public static CompanyEntity ModelToEntity(CompanyModel companyModel)
         {
             CompanyEntity entity = new CompanyEntity()

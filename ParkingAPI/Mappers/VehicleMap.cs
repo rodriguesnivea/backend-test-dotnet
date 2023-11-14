@@ -7,6 +7,7 @@ namespace ParkingAPI.Mappers
 {
     public class VehicleMap
     {
+        //add verificações
         public static VehicleEntity ModelToEntity(VehicleModel model)
         {
             VehicleEntity entity = new VehicleEntity()
@@ -45,6 +46,7 @@ namespace ParkingAPI.Mappers
         {
             VehicleDTO dto = new VehicleDTO()
             {
+                Id = model.Id,  
                 Color = model.Color,
                 Model = model.Model,
                 Brand = model.Brand,

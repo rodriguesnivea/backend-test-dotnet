@@ -1,4 +1,5 @@
 ﻿using ParkingAPI.Enums;
+using ParkingAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,5 +31,21 @@ namespace ParkingAPI.Entities
         [Column("type_vehicle")]
         public TypeVehicleEnum typeVehicle { get; set; }
 
+        public VehicleEntity()
+        {
+        }
+
+        public VehicleEntity(VehicleModel model)
+        {
+            Id = model.Id;
+            CreateAT = model.CreateAT;
+            UpdateAt = model.UpdateAt;
+            Brand = model.Brand;
+            Model = model.Model;
+            Color = model.Color;
+            Plate = model.Plate;
+            this.typeVehicle = model.typeVehicle;
+        }
     }
+
 }

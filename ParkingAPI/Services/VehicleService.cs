@@ -22,8 +22,8 @@ namespace ParkingAPI.Services
 
         public async Task<VehicleModel> CreateAsync(VehicleModel model)
         {
+            model.Id = Guid.NewGuid();
             if(await Exist(model.Id)) return null;
-
             var entity = VehicleMap.ModelToEntity(model);
             await _VehicleRepository.CreateAsync(entity);
             return model;
@@ -68,10 +68,10 @@ namespace ParkingAPI.Services
         {
             if (await Exist(id))
             {
-                var entity = VehicleMap.ModelToEntity(model);
+                model.Id = id;
+                var entity = VehicleMap.ModelToEntity(model);               
                 await _VehicleRepository.UpdateAsync(entity);
                 return model;
-
             }
 
             return null;

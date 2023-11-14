@@ -43,18 +43,21 @@ namespace ParkingAPI.Entities
         [Column("address_Id")]
         public Guid AddressEntityId { get; set; }
 
-        public static CompanyEntity ToEntity(CompanyModel model)
+        public CompanyEntity()
         {
-            var entity = CompanyMap.ModelToEntity(model);
-            entity.Id = Guid.NewGuid();
-            var adressId = Guid.NewGuid();
-            entity.AddressEntityId = adressId;
-            entity.Address.Id = adressId;
-            entity.CreateAT = DateTime.Now;
-            entity.UpdateAt = DateTime.Now;
-            entity.Address.CreateAT = DateTime.Now;
-            entity.Address.UpdateAt = DateTime.Now;
-            return entity;
+        }
+
+        public CompanyEntity(CompanyModel model)
+        {
+            Name = model.Name;
+            CNPJ = model.CNPJ;
+            NumberMotorcycies = model.NumberMotorcycies;
+            NumberCars = model.NumberCars;
+            Phone = model.Phone;
+            Address = new AddressEntity(model.Address);
+            AddressEntityId = Address.Id;
+            CreateAT = DateTime.Now;
+            UpdateAt = DateTime.Now;                  
         }
     }
 }

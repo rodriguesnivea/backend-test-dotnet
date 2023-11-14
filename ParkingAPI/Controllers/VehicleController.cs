@@ -8,10 +8,9 @@ using System.Linq;
 
 namespace ParkingAPI.Controllers
 {
-    [Route("api/v1/companies")]
+    [Route("api/v1/vehicles")]
     public class VehicleController : ControllerBase
     {
-
         private readonly IVehicleService _vehicleService;
 
         public VehicleController(IVehicleService vehicleService)
@@ -54,7 +53,7 @@ namespace ParkingAPI.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
             var response = await _vehicleService.CreateAsync(VehicleMap.DtoToModel(vehicle));
-            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, VehicleMap.ModelToDto(response));
         }
 
         [HttpPut("{id}")]

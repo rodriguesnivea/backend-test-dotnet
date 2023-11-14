@@ -23,7 +23,7 @@ namespace ParkingAPI.Services
         {
             if (await Exist(model.Id)) return null;
 
-            var entity = CompanyEntity.ToEntity(model);
+            var entity = new CompanyEntity(model);
             await _companyRepository.CreateAsync(entity);
             return CompanyMap.EntityToModel(entity);
 

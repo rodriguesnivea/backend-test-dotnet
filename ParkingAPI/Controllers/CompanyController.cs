@@ -56,7 +56,7 @@ namespace ParkingAPI.Controllers
         {
             if(!ModelState.IsValid) return BadRequest();
             var response = await _companyService.CreateAsync(CompanyMap.DtoToModel(companyDTO));
-            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, CompanyMap.ModelToDto(response));
         }
 
         [HttpPut("{id}")]

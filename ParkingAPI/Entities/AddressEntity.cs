@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParkingAPI.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +7,7 @@ namespace ParkingAPI.Entities
 {
     public class AddressEntity : BaseEntity
     {
+
         [Required]
         [StringLength(100)]
         [Column("street")]
@@ -26,5 +28,22 @@ namespace ParkingAPI.Entities
         [Required]
         [Column("number")]
         public int Number { get; set; }
+
+        public AddressEntity()
+        {
+        }
+
+        public AddressEntity(AddressModel model)
+        {
+            Id = model.Id;
+            CreateAT = DateTime.Now;
+            UpdateAt = DateTime.Now;
+            Street = model.Street;
+            City = model.City;
+            State = model.State;
+            Country = model.Country;
+            Number = model.Number;
+        }
     }
+
 }
