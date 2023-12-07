@@ -1,4 +1,5 @@
 ﻿using ParkingAPI.Entities;
+using ParkingAPI.Exceptions;
 using ParkingAPI.Mappers;
 using ParkingAPI.Models;
 using ParkingAPI.Repositories;
@@ -66,15 +67,11 @@ namespace ParkingAPI.Services
 
         public async Task<VehicleModel> UpdateAsync(Guid id, VehicleModel model)
         {
-            if (await Exist(id))
-            {
-                model.Id = id;
-                var entity = VehicleMap.ModelToEntity(model);               
-                await _VehicleRepository.UpdateAsync(entity);
-                return model;
-            }
-
-            return null;
+            if (!await Exist(id)) throw new ServiceException(ApplicationError.VEHICLE_NOT_FOUND_EXCEPTION);
+            model.Id = id;
+            var entity = VehicleMap.ModelToEntity(model);               
+            await _VehicleRepository.UpdateAsync(entity);
+            return model;
         }
     }
 }

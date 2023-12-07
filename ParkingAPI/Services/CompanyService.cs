@@ -1,4 +1,5 @@
 ﻿using ParkingAPI.Entities;
+using ParkingAPI.Exceptions;
 using ParkingAPI.Mappers;
 using ParkingAPI.Models;
 using ParkingAPI.Repositories.Interfaces;
@@ -64,15 +65,11 @@ namespace ParkingAPI.Services
 
         public async Task<CompanyModel> UpdateAsync(Guid id, CompanyModel model)
         {
-            if (await Exist(id))
-            {
-                model.Id = id;
-                var entity = CompanyMap.ModelToEntity(model);
-                await _companyRepository.UpdateCompanyAsync(entity);
-                return CompanyMap.EntityToModel(entity);
-            }
-
-            return null;
+            if (!await Exist(id)) throw new ServiceException(ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);
+            model.Id = id;
+            var entity = CompanyMap.ModelToEntity(model);
+            await _companyRepository.UpdateCompanyAsync(entity);
+            return CompanyMap.EntityToModel(entity);
         }
     }
 }
