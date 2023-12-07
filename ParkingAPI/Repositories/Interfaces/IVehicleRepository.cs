@@ -4,5 +4,6 @@ namespace ParkingAPI.Repositories.Interfaces
 {
     public interface IVehicleRepository : IBaseRepository<VehicleEntity> 
     {
+
     }
 }
