@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParkingAPI.Entities
 {
@@ -10,6 +11,8 @@ namespace ParkingAPI.Entities
         [DataType(DataType.Text)]
         [DisplayFormat(DataFormatString = "{0:dd / MM / yyyy HH: mm}")]
         private DateTime? _createAT;
+
+        [Column("start_date")]
         public DateTime? CreateAT
         {
             get { return _createAT; }
@@ -18,6 +21,7 @@ namespace ParkingAPI.Entities
         }
         [DataType(DataType.Text)]
         [DisplayFormat(DataFormatString = "{0:dd / MM / yyyy HH: mm}")]
+        [Column("modify_date")]
         public DateTime? UpdateAt { get; set; }
     }
 }
