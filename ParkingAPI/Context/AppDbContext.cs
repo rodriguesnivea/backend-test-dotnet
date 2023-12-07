@@ -19,5 +19,6 @@ namespace ParkingAPI.Context
         public virtual DbSet<CompanyEntity> Company { get; set; }
 
         public virtual DbSet<VehicleEntity> Vehicle { get; set; }
+        public virtual DbSet<ParkingEntiy> Parking { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ParkingAPI.Context;
+using ParkingAPI.Middlewares;
 using ParkingAPI.Repositories;
 using ParkingAPI.Repositories.Interfaces;
 using ParkingAPI.Services;
@@ -46,10 +47,12 @@ namespace ParkingAPI
             // services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IParkingRepository, ParkingRepository>();
 
             // Services
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IParkingService, ParkingService>();
 
             // Database
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -73,6 +76,8 @@ namespace ParkingAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
