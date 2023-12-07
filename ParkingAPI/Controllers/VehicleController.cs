@@ -57,7 +57,7 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] VehicleDTO vehicle) // receber o id na rota, melhor
+        public async Task<IActionResult> Put(Guid id, [FromBody] VehicleDTO vehicle)
         {
             if (!ModelState.IsValid) return BadRequest();
             var updatedVehicle = (await _vehicleService.UpdateAsync(id,VehicleMap.DtoToModel(vehicle)));
