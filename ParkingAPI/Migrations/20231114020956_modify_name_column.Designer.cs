@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParkingAPI.Context;
 
 namespace ParkingAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114020956_modify_name_column")]
+    partial class modify_name_column
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,10 +129,6 @@ namespace ParkingAPI.Migrations
                     b.Property<DateTime?>("CreateAT")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("start_date");
-
-                    b.Property<bool>("IsParked")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("is_parked");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime(6)")
