@@ -1,5 +1,6 @@
 ﻿using ParkingAPI.DTO;
 using ParkingAPI.Entities;
+using ParkingAPI.Exceptions;
 using ParkingAPI.Models;
 using System;
 using System.IO;
@@ -10,8 +11,6 @@ namespace ParkingAPI.Mappers
 {
     public class CompanyMap
     {
-
-        //add verificações
         public static CompanyEntity ModelToEntity(CompanyModel companyModel)
         {
             CompanyEntity entity = new CompanyEntity()

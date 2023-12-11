@@ -1,9 +1,11 @@
-﻿using ParkingAPI.Entities;
+﻿using Microsoft.Extensions.Logging;
+using ParkingAPI.Entities;
 using ParkingAPI.Exceptions;
 using ParkingAPI.Mappers;
 using ParkingAPI.Models;
 using ParkingAPI.Repositories.Interfaces;
 using ParkingAPI.Services.Interfaces;
+using ParkingAPI.Tracing.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,61 +16,83 @@ namespace ParkingAPI.Services
     public class CompanyService : ICompanyService
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly ILogger<CompanyService> _logger;
+        private readonly ITracingService _trace;
 
-        public CompanyService(ICompanyRepository companyRepository)
+        public CompanyService(ICompanyRepository companyRepository, ILogger<CompanyService> logger, ITracingService trace)
         {
             _companyRepository = companyRepository;
+            _logger = logger;
+            _trace = trace;
         }
 
         public async Task<CompanyModel> CreateAsync(CompanyModel model)
         {
-            if (await Exist(model.Id)) return null;
-
+            _logger.LogInformation($"m=CreateAsync, message=Iniciando registro de empresa, trace={_trace.TraceId()}");
             var entity = new CompanyEntity(model);
             await _companyRepository.CreateAsync(entity);
+            _logger.LogInformation($"m=CreateAsync, message=Finalizando registro de empresa, trace={_trace.TraceId()}");
             return CompanyMap.EntityToModel(entity);
 
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            if (await _companyRepository.Exist(id))
+            _logger.LogInformation($"m=iniciando, message=Finalizando remocao de empresa, trace={_trace.TraceId()}");
+            if (!await _companyRepository.Exist(id)) 
             {
-                await _companyRepository.DeleteCompanyAsync(id);
+                _logger.LogError($"m=DeleteAsync, message=O objeto '{id}' nao foi encontrado na base de dados, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);
             }
+
+            await _companyRepository.DeleteCompanyAsync(id);          
+            _logger.LogInformation($"m=DeleteAsync, message=Finalizando remocao de empresa, trace={_trace.TraceId()}");
         }
 
         public async Task<bool> Exist(Guid id)
         {
-           return await _companyRepository.Exist(id);
+            _logger.LogInformation($"m=Exist, message=Finalizando metodo exist, trace={_trace.TraceId()}");
+            return await _companyRepository.Exist(id);
         }
 
         public async Task<List<CompanyModel>> GetAllAsync()
         {
+            _logger.LogInformation($"m=GetAllAsync, message=Iniciando busca por todas empresas, trace={_trace.TraceId()}");
             var entities = await _companyRepository.FindAllAsync();
             var models = entities.Select(entity => CompanyMap.EntityToModel(entity)).ToList();
+            _logger.LogInformation($"m=GetAllAsync, message=Finalizando busca por todas empresas, trace={_trace.TraceId()}");
             return models;
         }
 
         public async Task<CompanyModel> GetAsync(Guid id)
-        {   
-            if (await Exist(id))
+        {
+            _logger.LogInformation($"m=GetAsync, message=Iniciando busca por empresa pelo id={id}, trace={_trace.TraceId()}");
+            if (!await Exist(id))
             {
-                var entity = await _companyRepository.GetAsync(id);
-                var  model = CompanyMap.EntityToModel(entity);
-
-                return model;
+                _logger.LogError($"m=GetAsync, message=O objeto '{id}' nao foi encontrado na base de dados, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);           
             }
-
-            return null;
+            var entity = await _companyRepository.GetAsync(id);
+            var  model = CompanyMap.EntityToModel(entity);
+            _logger.LogInformation($"m=GetAsync, message=Finalizando busca por empresa pelo id={id}, trace={_trace.TraceId()}");
+            return model;
+           
         }
 
         public async Task<CompanyModel> UpdateAsync(Guid id, CompanyModel model)
         {
-            if (!await Exist(id)) throw new ServiceException(ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);
+            _logger.LogInformation($"m=UpdateAsync, message=Iniciando edicao da empresa '{id}', trace={_trace.TraceId()}");
+            if (!await Exist(id))
+            {
+                _logger.LogError($"m=UpdateAsync, message=O objeto '{id}' nao foi encontrado na base de dados, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);
+            
+            }
+
             model.Id = id;
             var entity = CompanyMap.ModelToEntity(model);
             await _companyRepository.UpdateCompanyAsync(entity);
+            _logger.LogInformation($"m=UpdateAsync, message=Finalizando edicao da empresa '{id}', trace={_trace.TraceId()}");
             return CompanyMap.EntityToModel(entity);
         }
     }

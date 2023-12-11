@@ -60,7 +60,7 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] CompanyDTO companyDTO) // receber o id na rota, melhor
+        public async Task<IActionResult> Put(Guid id, [FromBody] CompanyDTO companyDTO)
         {
             if (!ModelState.IsValid) return BadRequest();
             var updatedCompany = (await _companyService.UpdateAsync(id, CompanyMap.DtoToModel(companyDTO)));
