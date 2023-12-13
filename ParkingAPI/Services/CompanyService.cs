@@ -59,6 +59,11 @@ namespace ParkingAPI.Services
         {
             _logger.LogInformation($"m=GetAllAsync, message=Iniciando busca por todas empresas, trace={_trace.TraceId()}");
             var entities = await _companyRepository.FindAllAsync();
+            if (entities.Count == 0)
+            {
+                _logger.LogError($"m=GetAllAsync, message=Nenhuma empresa disponivel, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.COMPANY_NO_CONTENT_EXCEPTION);
+            }
             var models = entities.Select(entity => CompanyMap.EntityToModel(entity)).ToList();
             _logger.LogInformation($"m=GetAllAsync, message=Finalizando busca por todas empresas, trace={_trace.TraceId()}");
             return models;

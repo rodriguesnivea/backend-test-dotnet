@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ParkingAPI.Entities;
 using ParkingAPI.Exceptions;
 using ParkingAPI.Mappers;
@@ -62,6 +63,11 @@ namespace ParkingAPI.Services
         {
             _logger.LogInformation($"m=GetAllAsync, message=Iniciando busca por veiculos, trace={_trace.TraceId()}");
             var entities = await _VehicleRepository.GetAllAsync();
+            if (entities.Count == 0)
+            {
+                _logger.LogError($"m=GetAllAsync, message=Nenhum veiculo disponivel, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.VEHICLE_NO_CONTENT_EXCEPTION);
+            }
             var models = entities.Select(entity => VehicleMap.EntityToModel(entity)).ToList();
             _logger.LogInformation($"m=GetAllAsync, message=Finalizando busca por veiculos, trace={_trace.TraceId()}");
             return models;
