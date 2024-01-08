@@ -7,7 +7,7 @@ namespace ParkingAPI.Services.Interfaces
 {
     public interface IParkingService
     {
-        Task<bool> CheckinAsync(Guid companyId, Guid vehicleId);
+        Task CheckinAsync(Guid companyId, Guid vehicleId);
         Task<bool> CheckoutAsync(Guid companyId, Guid vehicleId);
         Task<ParkingModel> FindParkedVehicleAsync(Guid companyId, Guid vehicleId);
     }

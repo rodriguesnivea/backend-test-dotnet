@@ -9,6 +9,7 @@ namespace ParkingAPI.Repositories.Interfaces
     {
         Task<bool> CheckinAsync(ParkingEntiy entity);
         Task<bool> CheckoutAsync(ParkingEntiy entity);
+        Task<int> GetNumberOfParkedVehicles(CompanyEntity company, VehicleEntity vehicle);
         Task <ParkingEntiy> FindParkedVehicleAsync(Guid companyId, Guid vehicleId);
     }
 }

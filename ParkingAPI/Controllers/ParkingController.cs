@@ -22,29 +22,15 @@ namespace ParkingAPI.Controllers
         [HttpPost("{companyId}/vehicles/{vehicleId}/check-in")]
         public async Task<IActionResult> CheckIn(Guid companyId, Guid vehicleId)
         {
-            try
-            {
-                var result = await _parkingService.CheckinAsync(companyId, vehicleId);
-                return Ok();
-            } 
-            catch (ServiceException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _parkingService.CheckinAsync(companyId, vehicleId);
+            return Ok();
         }
 
         [HttpPost("{companyId}/vehicles/{vehicleId}/check-out")]
         public async Task<IActionResult> CheckOut(Guid companyId, Guid vehicleId)
         {
-            try
-            {
-                var result = await _parkingService.CheckoutAsync(companyId, vehicleId);
-                return Ok();
-            }
-            catch (ServiceException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _parkingService.CheckoutAsync(companyId, vehicleId);
+            return Ok();
         }
     }
 

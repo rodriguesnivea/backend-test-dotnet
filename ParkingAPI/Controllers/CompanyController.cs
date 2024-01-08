@@ -26,10 +26,6 @@ namespace ParkingAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _companyService.GetAllAsync();
-            if (result.Count == 0)
-            {
-                return NoContent(); 
-            }
             return Ok(result.Select(company => CompanyMap.ModelToDto(company)));
         }
 
@@ -38,9 +34,6 @@ namespace ParkingAPI.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var result = await _companyService.GetAsync(id);
-
-            if (result == null) return NotFound();
-
             return Ok(result);
         }
 

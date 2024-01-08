@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using ParkingAPI.Context;
 using ParkingAPI.Entities;
 using ParkingAPI.Exceptions;
@@ -41,6 +42,15 @@ namespace ParkingAPI.Repositories
                 .FirstOrDefaultAsync(p => p.CompanyId == companyId && p.VehicleId == vehicleId && p.IsParked);
 
             return entity;
+        }
+
+        public async Task<int> GetNumberOfParkedVehicles(CompanyEntity company, VehicleEntity vehicle)
+        {
+            var count = await _DbSet
+                .Include(p => p.Vehicle)
+                .Where(p => p.Vehicle.typeVehicle == vehicle.typeVehicle && p.CompanyId == company.Id && p.IsParked)
+                .CountAsync();
+            return count;
         }
     }
 }

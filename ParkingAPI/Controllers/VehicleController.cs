@@ -23,10 +23,6 @@ namespace ParkingAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _vehicleService.GetAllAsync();
-            if (result.Count == 0)
-            {
-                return NoContent();
-            }
             return Ok(result.Select(vehicle => VehicleMap.ModelToDto(vehicle)));
         }
 
@@ -35,9 +31,6 @@ namespace ParkingAPI.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var result = await _vehicleService.GetAsync(id);
-
-            if (result == null) return NotFound();
-
             return Ok(result);
         }
 
@@ -47,7 +40,6 @@ namespace ParkingAPI.Controllers
             await _vehicleService.DeleteAsync(id);
             return Ok();
         }
-
         [HttpPost()]
         public async Task<IActionResult> Post([FromBody] VehicleDTO vehicle)
         {
