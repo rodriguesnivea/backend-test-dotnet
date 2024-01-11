@@ -1,4 +1,5 @@
-﻿using ParkingAPI.Enums;
+﻿using Microsoft.EntityFrameworkCore;
+using ParkingAPI.Enums;
 using ParkingAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

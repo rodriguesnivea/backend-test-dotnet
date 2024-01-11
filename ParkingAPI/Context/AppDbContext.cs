@@ -20,5 +20,16 @@ namespace ParkingAPI.Context
 
         public virtual DbSet<VehicleEntity> Vehicle { get; set; }
         public virtual DbSet<ParkingEntiy> Parking { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<VehicleEntity>(entity =>
+            {
+                entity.HasIndex(e => e.Plate)
+                    .IsUnique();
+            });
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
