@@ -89,7 +89,7 @@ namespace ParkingAPI.Services
             if (vehicle.typeVehicle == TypeVehicleEnum.Car && parkedVehicleByType == company.NumberCars)
             {
                 _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
-                throw new ServiceException(ApplicationError.FILLED_MOTORCYCLE_SPOTS_EXCEPTION);
+                throw new ServiceException(ApplicationError.FILLED_CAR_SPOTS_EXCEPTION);
             }
             
             if(vehicle.typeVehicle == TypeVehicleEnum.Motocycle && parkedVehicleByType == company.NumberMotorcycies) 

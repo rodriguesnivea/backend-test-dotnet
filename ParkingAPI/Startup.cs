@@ -14,6 +14,8 @@ using ParkingAPI.Repositories;
 using ParkingAPI.Repositories.Interfaces;
 using ParkingAPI.Services;
 using ParkingAPI.Services.Interfaces;
+using ParkingAPI.Tracing;
+using ParkingAPI.Tracing.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +46,6 @@ namespace ParkingAPI
             });
 
             // Repositories
-            // services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IParkingRepository, ParkingRepository>();
@@ -53,6 +54,7 @@ namespace ParkingAPI
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IParkingService, ParkingService>();
+            services.AddScoped<ITracingService, TracingService>();
 
             // Database
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
