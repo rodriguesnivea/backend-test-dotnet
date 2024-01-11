@@ -18,23 +18,26 @@ namespace ParkingAPI.Services
     public class ParkingService : IParkingService
     {
         private readonly IParkingRepository _parkingRepository;
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IVehicleRepository _vehicleRepository;
         private readonly ILogger<ParkingService> _logger;
         private readonly ITracingService _trace;
+        private readonly ICompanyRepository _companyRepository;
+        private readonly IVehicleRepository _vehicleRepository;
 
-        public ParkingService(IParkingRepository parkingRepository, ILogger<ParkingService> logger, ITracingService trace)
+        public ParkingService(IParkingRepository parkingRepository, ILogger<ParkingService> logger, ITracingService trace, ICompanyRepository companyRepository, IVehicleRepository vehicleRepository)
         {
             _parkingRepository = parkingRepository;
             _logger = logger;
             _trace = trace;
+            _companyRepository = companyRepository;
+            _vehicleRepository = vehicleRepository;
         }
 
         public async Task CheckinAsync(Guid companyId, Guid vehicleId)
         {
             _logger.LogInformation($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=Iniciando checki, trace={_trace.TraceId()}");
-            await CheckAvailableSpots(companyId, vehicleId);
-
+            var company = await _companyRepository.GetAsync(companyId);
+            var vehicle = await _vehicleRepository.GetAsync(vehicleId);
+            CheckValidParameters(company, vehicle);
             var entity = await _parkingRepository.FindParkedVehicleAsync(companyId, vehicleId);
 
             if (entity != null)
@@ -42,6 +45,7 @@ namespace ParkingAPI.Services
                 _logger.LogError($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=O Registro de estacionamento ja existe, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.VEHICLE_ALREADY_PARKED_EXCEPTION);
             }
+            await CheckAvailableSpots(company, vehicle);
 
             entity = new ParkingEntiy(companyId, vehicleId);
 
@@ -77,23 +81,38 @@ namespace ParkingAPI.Services
             return ParkingMap.EntityToModel(entity);
         }
 
-        private async Task CheckAvailableSpots(Guid companyId, Guid vehicleId)
+        private async Task CheckAvailableSpots(CompanyEntity company, VehicleEntity vehicle)
         {
-            var company = await _companyRepository.GetAsync(companyId);
-            var vehicle = await _vehicleRepository.GetAsync(vehicleId);
-            var parkedVehicleByType = await _parkingRepository.GetNumberOfParkedVehicles(company, vehicle);
-
+            
+            var parkedVehicleByType = await _parkingRepository.GetNumberOfParkedVehicles(company, vehicle);  
+            
             if (vehicle.typeVehicle == TypeVehicleEnum.Car && parkedVehicleByType == company.NumberCars)
             {
-                _logger.LogError($"m=CheckoutAsync, companyId={companyId}, vehicleId={vehicleId}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
+                _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.FILLED_MOTORCYCLE_SPOTS_EXCEPTION);
             }
             
             if(vehicle.typeVehicle == TypeVehicleEnum.Motocycle && parkedVehicleByType == company.NumberMotorcycies) 
             {
-                _logger.LogError($"m=CheckoutAsync, companyId={companyId}, vehicleId={vehicleId}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
+                _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.FILLED_MOTORCYCLE_SPOTS_EXCEPTION);
             }
+        }
+
+        private void CheckValidParameters(CompanyEntity company, VehicleEntity vehicle)
+        {
+            if (company == null)
+            {
+                _logger.LogError($"m=CheckValidParameters, message=Registro de empresa nao encontrado, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);
+            }
+
+            if(vehicle == null)
+            {
+                _logger.LogError($"m=CheckValidParameters, message=Registro de veiculo nao encontrado, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.VEHICLE_NOT_FOUND_EXCEPTION);
+            }
+
         }
     }
 }
