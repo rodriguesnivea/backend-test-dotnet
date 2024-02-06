@@ -33,7 +33,6 @@ namespace ParkingAPI.Services
             await _companyRepository.CreateAsync(entity);
             _logger.LogInformation($"m=CreateAsync, message=Finalizando registro de empresa, trace={_trace.TraceId()}");
             return CompanyMap.EntityToModel(entity);
-
         }
 
         public async Task DeleteAsync(Guid id)

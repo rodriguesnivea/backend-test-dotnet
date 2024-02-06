@@ -32,12 +32,12 @@ namespace ParkingAPI.Services
         public async Task<VehicleModel> CreateAsync(VehicleModel model)
         {
             _logger.LogInformation($"m=CreateAsync, message=Iniciando registro de veiculo, trace={_trace.TraceId()}");
+            await ValidatePlate(model);
             model.Id = Guid.NewGuid();
             var entity = VehicleMap.ModelToEntity(model);
             await _VehicleRepository.CreateAsync(entity);
             _logger.LogInformation($"m=CreateAsync, vehicleid={entity?.Id}, message=Finlizano registro de veiculo, trace={_trace.TraceId()}");
             return model;
-
         }
 
         public async Task DeleteAsync(Guid id)
@@ -97,10 +97,34 @@ namespace ParkingAPI.Services
                 throw new ServiceException(ApplicationError.VEHICLE_NOT_FOUND_EXCEPTION);
             }
             model.Id = id;
+            await CheckLicensePlateConflict(id, model);
             var entity = VehicleMap.ModelToEntity(model);
             await _VehicleRepository.UpdateAsync(entity);
             _logger.LogInformation($"m=UpdateAsync, vehicleid={id}, message=Finalizando edicao de veiculo, trace={_trace.TraceId()}");
             return model;
+        }
+
+
+        private async Task ValidatePlate(VehicleModel model)
+        {
+            if (await _VehicleRepository.PlateExist(model.Plate))
+            {
+                _logger.LogError($"m=CreateAsync, message=Essa Placa pertence a outro veiculo, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.VEHICLE_PLATE_CONFLICT_EXCEPTION);
+            }
+        }
+        private async Task CheckLicensePlateConflict(Guid id, VehicleModel model)
+        {
+            var currentVehicle = await _VehicleRepository.GetAsync(id);
+            if (currentVehicle.Plate != model.Plate)
+            {
+                var vehicleFromPlate = await _VehicleRepository.GetByPlateAsync(model.Plate);
+                if (vehicleFromPlate != null && vehicleFromPlate.Id != currentVehicle.Id)
+                {
+                    _logger.LogError($"m=UpdateAsync, message=Essa Placa pertence a outro veiculo, trace={_trace.TraceId()}");
+                    throw new ServiceException(ApplicationError.VEHICLE_PLATE_CONFLICT_EXCEPTION);
+                }
+            }
         }
     }
 }
