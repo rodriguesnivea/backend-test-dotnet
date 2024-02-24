@@ -35,8 +35,17 @@ namespace ParkingAPI.Services
         public async Task CheckinAsync(Guid companyId, Guid vehicleId)
         {
             _logger.LogInformation($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=Iniciando checki, trace={_trace.TraceId()}");
+
             var company = await _companyRepository.GetAsync(companyId);
             var vehicle = await _vehicleRepository.GetAsync(vehicleId);
+
+            string dataHoraString1 = "2024-02-20 23:39:45";
+            string dataHoraString2 = "2024-02-08 14:33:20";
+
+            DateTime dataHora1 = DateTime.ParseExact(dataHoraString1, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime dataHora2 = DateTime.ParseExact(dataHoraString2, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            dataHora1.AddDays(1);
+            var number = await _parkingRepository.GetTotalCarCheckinsByCompanyInTimeRange(company, dataHora2.Date, dataHora1.Date);
             CheckValidParameters(company, vehicle);
             var entity = await _parkingRepository.FindParkedVehicleAsync(companyId, vehicleId);
 
@@ -49,6 +58,7 @@ namespace ParkingAPI.Services
 
             entity = new ParkingEntiy(companyId, vehicleId);
 
+            // Converter as strings para DateTime
             _logger.LogInformation($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=Finalizando checkin, trace={_trace.TraceId()}");
             await _parkingRepository.CheckinAsync(entity); 
         }
@@ -88,13 +98,13 @@ namespace ParkingAPI.Services
             
             if (vehicle.typeVehicle == TypeVehicleEnum.Car && parkedVehicleByType == company.NumberCars)
             {
-                _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
+                _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Nenhuma vaga para carro disponivel, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.FILLED_CAR_SPOTS_EXCEPTION);
             }
             
             if(vehicle.typeVehicle == TypeVehicleEnum.Motocycle && parkedVehicleByType == company.NumberMotorcycies) 
             {
-                _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Registro de estacionamento nao encontrado, trace={_trace.TraceId()}");
+                _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Nenhuma vaga para moto disponivel, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.FILLED_MOTORCYCLE_SPOTS_EXCEPTION);
             }
         }
