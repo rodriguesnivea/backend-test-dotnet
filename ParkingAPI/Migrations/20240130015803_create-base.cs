@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ParkingAPI.Migrations
 {
-    public partial class StartMigrations : Migration
+    public partial class createbase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,8 +24,8 @@ namespace ParkingAPI.Migrations
                     country = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     number = table.Column<int>(type: "int", nullable: false),
-                    CreateAT = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    UpdateAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    start_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    modify_date = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,8 +47,8 @@ namespace ParkingAPI.Migrations
                     plate = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     type_vehicle = table.Column<int>(type: "int", nullable: false),
-                    CreateAT = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    UpdateAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    start_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    modify_date = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,30 +69,78 @@ namespace ParkingAPI.Migrations
                     number_cars = table.Column<int>(type: "int", nullable: false),
                     phone = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    address_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    CreateAT = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    UpdateAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    address_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    start_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    modify_date = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Company", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Company_Address_address_Id",
-                        column: x => x.address_Id,
+                        name: "FK_Company_Address_address_id",
+                        column: x => x.address_id,
                         principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Parking",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    company_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    vehicle_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    is_parked = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    start_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    modify_date = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parking", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Parking_Company_company_id",
+                        column: x => x.company_id,
+                        principalTable: "Company",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Parking_Vehicle_vehicle_id",
+                        column: x => x.vehicle_id,
+                        principalTable: "Vehicle",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
-                name: "IX_Company_address_Id",
+                name: "IX_Company_address_id",
                 table: "Company",
-                column: "address_Id");
+                column: "address_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Parking_company_id",
+                table: "Parking",
+                column: "company_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Parking_vehicle_id",
+                table: "Parking",
+                column: "vehicle_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicle_plate",
+                table: "Vehicle",
+                column: "plate",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Parking");
+
             migrationBuilder.DropTable(
                 name: "Company");
 

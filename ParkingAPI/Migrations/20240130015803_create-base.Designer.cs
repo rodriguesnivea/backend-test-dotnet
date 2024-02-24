@@ -9,8 +9,8 @@ using ParkingAPI.Context;
 namespace ParkingAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231114023212_create_new_column_in_table_parking")]
-    partial class create_new_column_in_table_parking
+    [Migration("20240130015803_create-base")]
+    partial class createbase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,9 +72,9 @@ namespace ParkingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AddressEntityId")
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("address_Id");
+                        .HasColumnName("address_id");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
@@ -111,7 +111,7 @@ namespace ParkingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressEntityId");
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Company");
                 });
@@ -195,6 +195,9 @@ namespace ParkingAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Plate")
+                        .IsUnique();
+
                     b.ToTable("Vehicle");
                 });
 
@@ -202,7 +205,7 @@ namespace ParkingAPI.Migrations
                 {
                     b.HasOne("ParkingAPI.Entities.AddressEntity", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressEntityId")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

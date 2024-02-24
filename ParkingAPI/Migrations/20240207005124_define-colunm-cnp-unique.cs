@@ -2,22 +2,22 @@
 
 namespace ParkingAPI.Migrations
 {
-    public partial class unique_column : Migration
+    public partial class definecolunmcnpunique : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateIndex(
-                name: "IX_Vehicle_plate",
-                table: "Vehicle",
-                column: "plate",
+                name: "IX_Company_cnpj",
+                table: "Company",
+                column: "cnpj",
                 unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_Vehicle_plate",
-                table: "Vehicle");
+                name: "IX_Company_cnpj",
+                table: "Company");
         }
     }
 }

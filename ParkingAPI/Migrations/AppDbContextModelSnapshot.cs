@@ -70,9 +70,9 @@ namespace ParkingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AddressEntityId")
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("address_Id");
+                        .HasColumnName("address_id");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
@@ -109,7 +109,10 @@ namespace ParkingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressEntityId");
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("CNPJ")
+                        .IsUnique();
 
                     b.ToTable("Company");
                 });
@@ -203,7 +206,7 @@ namespace ParkingAPI.Migrations
                 {
                     b.HasOne("ParkingAPI.Entities.AddressEntity", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressEntityId")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

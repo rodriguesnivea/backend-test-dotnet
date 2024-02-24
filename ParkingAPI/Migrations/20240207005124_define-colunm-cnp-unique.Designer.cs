@@ -9,8 +9,8 @@ using ParkingAPI.Context;
 namespace ParkingAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231114014945_create_table_parking")]
-    partial class create_table_parking
+    [Migration("20240207005124_define-colunm-cnp-unique")]
+    partial class definecolunmcnpunique
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,8 @@ namespace ParkingAPI.Migrations
                         .HasColumnName("country");
 
                     b.Property<DateTime?>("CreateAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
 
                     b.Property<int>("Number")
                         .HasColumnType("int")
@@ -71,9 +72,9 @@ namespace ParkingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("AddressEntityId")
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("char(36)")
-                        .HasColumnName("address_Id");
+                        .HasColumnName("address_id");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
@@ -82,7 +83,8 @@ namespace ParkingAPI.Migrations
                         .HasColumnName("cnpj");
 
                     b.Property<DateTime?>("CreateAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -109,7 +111,10 @@ namespace ParkingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressEntityId");
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("CNPJ")
+                        .IsUnique();
 
                     b.ToTable("Company");
                 });
@@ -125,7 +130,12 @@ namespace ParkingAPI.Migrations
                         .HasColumnName("company_id");
 
                     b.Property<DateTime?>("CreateAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
+
+                    b.Property<bool>("IsParked")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_parked");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime(6)")
@@ -163,7 +173,8 @@ namespace ParkingAPI.Migrations
                         .HasColumnName("color");
 
                     b.Property<DateTime?>("CreateAT")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -187,6 +198,9 @@ namespace ParkingAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Plate")
+                        .IsUnique();
+
                     b.ToTable("Vehicle");
                 });
 
@@ -194,7 +208,7 @@ namespace ParkingAPI.Migrations
                 {
                     b.HasOne("ParkingAPI.Entities.AddressEntity", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressEntityId")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
