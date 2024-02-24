@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using ParkingAPI.Mappers;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ParkingAPI.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -35,13 +34,12 @@ namespace ParkingAPI.Entities
         [Column("phone")]
         public string Phone { get; set; }
 
-        [Required()]
-        [Column("address")]
-        public AddressEntity Address { get; set; }
+        public virtual AddressEntity Address { get; set; }
 
         [Required()]
-        [Column("address_Id")]
-        public Guid AddressEntityId { get; set; }
+        [Column("address_id")]
+        [ForeignKey("Address")]
+        public Guid AddressId { get; set; }
 
         public CompanyEntity()
         {
@@ -55,7 +53,7 @@ namespace ParkingAPI.Entities
             NumberCars = model.NumberCars;
             Phone = model.Phone;
             Address = new AddressEntity(model.Address);
-            AddressEntityId = Address.Id;
+            AddressId = Address.Id;
             CreateAT = DateTime.Now;
             UpdateAt = DateTime.Now;                  
         }
