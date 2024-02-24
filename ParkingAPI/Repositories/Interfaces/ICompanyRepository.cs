@@ -10,5 +10,7 @@ namespace ParkingAPI.Repositories.Interfaces
         Task DeleteCompanyAsync(Guid id);
         Task<List<CompanyEntity>> FindAllAsync();
         Task<CompanyEntity> UpdateCompanyAsync(CompanyEntity entity);
+        Task<bool> CnpjExist(string cnpj);
+        Task<CompanyEntity> GetByCnpjAsync(string plate);
     }
 }

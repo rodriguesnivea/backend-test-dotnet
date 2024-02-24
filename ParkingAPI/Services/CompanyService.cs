@@ -3,6 +3,7 @@ using ParkingAPI.Entities;
 using ParkingAPI.Exceptions;
 using ParkingAPI.Mappers;
 using ParkingAPI.Models;
+using ParkingAPI.Repositories;
 using ParkingAPI.Repositories.Interfaces;
 using ParkingAPI.Services.Interfaces;
 using ParkingAPI.Tracing.Interfaces;
@@ -29,6 +30,7 @@ namespace ParkingAPI.Services
         public async Task<CompanyModel> CreateAsync(CompanyModel model)
         {
             _logger.LogInformation($"m=CreateAsync, message=Iniciando registro de empresa, trace={_trace.TraceId()}");
+            await ValidateCnpj(model);
             var entity = new CompanyEntity(model);
             await _companyRepository.CreateAsync(entity);
             _logger.LogInformation($"m=CreateAsync, message=Finalizando registro de empresa, trace={_trace.TraceId()}");
@@ -95,9 +97,33 @@ namespace ParkingAPI.Services
 
             model.Id = id;
             var entity = CompanyMap.ModelToEntity(model);
+            await CheckLicenseCnpjConflict(id, model);
             await _companyRepository.UpdateCompanyAsync(entity);
             _logger.LogInformation($"m=UpdateAsync, message=Finalizando edicao da empresa '{id}', trace={_trace.TraceId()}");
             return CompanyMap.EntityToModel(entity);
+        }
+
+        private async Task ValidateCnpj(CompanyModel model)
+        {
+            if (await _companyRepository.CnpjExist(model.CNPJ))
+            {
+                _logger.LogError($"m=CreateAsync, message=Esse CNPJ pertence a outra empresa, trace={_trace.TraceId()}");
+                throw new ServiceException(ApplicationError.COMPANY_CNPJ_CONFLICT_EXCEPTION);
+            }
+        }
+
+        private async Task CheckLicenseCnpjConflict(Guid id, CompanyModel model)
+        {
+            var currentCompany = await _companyRepository.GetAsync(id);
+            if(currentCompany.CNPJ != model.CNPJ)
+            {
+               var companyFromCnpj = await _companyRepository.GetByCnpjAsync(model.CNPJ);
+               if(companyFromCnpj != null && currentCompany.Id != companyFromCnpj.Id)
+                {
+                    _logger.LogError($"m=UpdateAsync, message=Esse CNPJ pertence a outra empresa, trace={_trace.TraceId()}");
+                    throw new ServiceException(ApplicationError.COMPANY_CNPJ_CONFLICT_EXCEPTION);
+                }
+            }
         }
     }
 }

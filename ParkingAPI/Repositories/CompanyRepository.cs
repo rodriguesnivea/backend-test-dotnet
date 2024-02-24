@@ -16,12 +16,18 @@ namespace ParkingAPI.Repositories
         public CompanyRepository(AppDbContext context) : base(context)
         {
         }
-
         public async Task DeleteCompanyAsync(Guid id)
         {
-            var result = _DbSet.Include(company => company.Address).FirstOrDefault(T => T.Id == id);
-            _DbSet.Remove(result);
-            await _Context.SaveChangesAsync();
+            try
+            {
+                var result = _DbSet.Include(company => company.Address).Where(T => T.Id == id).SingleOrDefault();
+                _DbSet.Remove(result);
+                await _Context.SaveChangesAsync();
+
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         public async Task<List<CompanyEntity>> FindAllAsync()
@@ -35,6 +41,14 @@ namespace ParkingAPI.Repositories
             CompanyMap.TransferDataEntity(updatedEntity, entityFromDatabase);
             await _Context.SaveChangesAsync();
             return entityFromDatabase;
+        }
+        public async Task<bool> CnpjExist(string cnpj)
+        {
+            return await _DbSet.AnyAsync(company => company.CNPJ.Equals(cnpj));
+        }
+        public async Task<CompanyEntity> GetByCnpjAsync(string cnpj)
+        {
+           return await _DbSet.Include(company => company.Address).FirstOrDefaultAsync( company => company.CNPJ.Equals(cnpj));
         }
     }
 }
