@@ -41,7 +41,7 @@ namespace Application.Test.Services
             { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
             var companyTobeSaved = new CompanyModel
             { Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = address };
-
+            _companyRepositoryMock.Setup(Repository => Repository.CnpjExist(companyTobeSaved.CNPJ)).ReturnsAsync(false);
             var result = await _companyService.CreateAsync(companyTobeSaved);
             Assert.NotNull(result);
             Assert.Equal(companyTobeSaved.Id, result.Id);
@@ -56,7 +56,17 @@ namespace Application.Test.Services
             Assert.Equal(companyTobeSaved.Address.Country, result.Address.Country);
             Assert.Equal(companyTobeSaved.Address.Number, result.Address.Number);
         }
-
+        [Fact]
+        public async void CreateAsync_LancaExcecaoCnpjConflito()
+        {
+            var address = new AddressModel
+            { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
+            var companyTobeSaved = new CompanyModel
+            { Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = address };
+            _companyRepositoryMock.Setup(Repository => Repository.CnpjExist(companyTobeSaved.CNPJ)).ReturnsAsync(true);
+            var exception = await Assert.ThrowsAsync<ServiceException>(() => _companyService.CreateAsync(companyTobeSaved));
+            Assert.Equal(exception.ApplicationError, ApplicationError.COMPANY_CNPJ_CONFLICT_EXCEPTION);
+        }
         [Fact]
         public async void DeleteAsync_DeletaEmpresaComSucesso()
         {
@@ -156,9 +166,16 @@ namespace Application.Test.Services
             { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
             var companyTobeSaved = new CompanyModel
             { Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = addressTobeSaved };
+            var addressEntity = new AddressEntity
+            { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
+            var companyEntity = new CompanyEntity
+            { Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = addressEntity };
+
             _companyRepositoryMock.Setup(repository => repository.Exist(id)).ReturnsAsync(true);
+            _companyRepositoryMock.Setup(repository => repository.GetAsync(id)).ReturnsAsync(companyEntity);
             await _companyService.UpdateAsync(id, companyTobeSaved);
             _companyRepositoryMock.Verify(repository => repository.Exist(id), Times.Once);
+            _companyRepositoryMock.Verify(repository => repository.GetByCnpjAsync(companyTobeSaved.CNPJ), Times.Never);
         }
 
         [Fact]
@@ -172,6 +189,30 @@ namespace Application.Test.Services
             _companyRepositoryMock.Setup(repository => repository.Exist(id)).ReturnsAsync(false);
             var exception = await Assert.ThrowsAsync<ServiceException>(() => _companyService.UpdateAsync(id, companyTobeSaved));
             Assert.Equal(exception.ApplicationError, ApplicationError.COMPANY_NOT_FOUND_EXCEPTION);
+        }
+
+        [Fact]
+        public async void UpdateAsync_LancaExcecaoCnpjConflito()
+        {
+            var idCurrrentCompany = Guid.NewGuid();
+            var addressTobeSaved = new AddressModel
+            { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
+            var companyTobeSaved = new CompanyModel
+            { Id = idCurrrentCompany, Name = "CAutomotiva", CNPJ = "12556922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = addressTobeSaved };
+            var addressCurrrentEntity = new AddressEntity
+            { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
+            var currentCompanyEntity = new CompanyEntity
+            { Id = idCurrrentCompany, Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = addressCurrrentEntity };
+            var addressFromCnpj = new AddressEntity
+            { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
+            var companyFomCnpj = new CompanyEntity
+            { Id = Guid.NewGuid(), Name = "CAutomotiva", CNPJ = "12556922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = addressFromCnpj };
+            _companyRepositoryMock.Setup(repository => repository.Exist(idCurrrentCompany)).ReturnsAsync(true);
+            _companyRepositoryMock.Setup(repository => repository.GetAsync(idCurrrentCompany)).ReturnsAsync(currentCompanyEntity);
+            _companyRepositoryMock.Setup(repository => repository.GetByCnpjAsync(companyTobeSaved.CNPJ)).ReturnsAsync(companyFomCnpj);
+
+            var exception = await Assert.ThrowsAsync<ServiceException>(() => _companyService.UpdateAsync(idCurrrentCompany, companyTobeSaved));
+            Assert.Equal(exception.ApplicationError, ApplicationError.COMPANY_CNPJ_CONFLICT_EXCEPTION);
         }
     }
 }
