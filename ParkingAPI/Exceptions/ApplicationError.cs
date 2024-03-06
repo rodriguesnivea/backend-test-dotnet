@@ -29,6 +29,7 @@ namespace ParkingAPI.Exceptions
         public static readonly ApplicationError COMPANY_CNPJ_CONFLICT_EXCEPTION = new ApplicationError("COMPANY_CNPJ_CONFLICT", "Esse CNPJ pertence a outra empresa", HttpStatusCode.Conflict);
         public static readonly ApplicationError FILLED_CAR_SPOTS_EXCEPTION = new ApplicationError("FILLED_CAR_SPOTS", "Nenhuma vaga para carro disponivel", HttpStatusCode.BadRequest);
         public static readonly ApplicationError FILLED_MOTORCYCLE_SPOTS_EXCEPTION = new ApplicationError("FILLED_MOTORCYCLE_SPOTS", "Nenhuma vaga para moto disponivel", HttpStatusCode.BadRequest);
+        public static readonly ApplicationError FILLED_REPORT_DATETIME_EXCEPTION = new ApplicationError("FILLED_REPORT_DATETIME", "Data final eh menor do que a data inicial", HttpStatusCode.BadRequest);
 
     }
 }
