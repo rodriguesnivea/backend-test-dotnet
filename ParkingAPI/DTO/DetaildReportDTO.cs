@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ParkingAPI.DTO
 {
@@ -14,9 +13,5 @@ namespace ParkingAPI.DTO
         public int TotalCheckinMotorcycle { get; set; }
         public int TotalCheckoutMotorcycle { get; set; }
         public List<ParkingHistoryDTO> parkingHistory{ get; set; }
-        [Required]
-        public DateTime StartTime { get; set; }
-        [Required]
-        public DateTime EndTime{ get; set; }
     }
 }
