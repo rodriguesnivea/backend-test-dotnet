@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\Nivea\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Nivea\\.nuget\\packages"
-    ]
-  }
-}
