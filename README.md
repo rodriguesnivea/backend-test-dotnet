@@ -56,3 +56,5 @@ Crie um fork do teste para acompanharmos o seu desenvolvimento através dos seus
 
 ## Obrigado!
 Agradecemos sua participação no teste. Boa sorte! 😄
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=rodriguesnivea_backend-test-dotnet&metric=bugs)](https://sonarcloud.io/summary/new_code?id=rodriguesnivea_backend-test-dotnet)
