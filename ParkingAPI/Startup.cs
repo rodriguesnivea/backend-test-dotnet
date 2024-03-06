@@ -54,6 +54,7 @@ namespace ParkingAPI
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IParkingService, ParkingService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<ITracingService, TracingService>();
 
             // Database
