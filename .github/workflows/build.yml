@@ -44,5 +44,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"rodriguesnivea_backend-test-dotnet" /o:"rodriguesnivea" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          msbuild .\ParkingAPI\ParkingAPI.sln
+          dotnet build .\ParkingAPI\ParkingAPI.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
