@@ -8,10 +8,7 @@ using ParkingAPI.Repositories.Interfaces;
 using ParkingAPI.Services.Interfaces;
 using ParkingAPI.Tracing.Interfaces;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ParkingAPI.Services
 {
@@ -35,30 +32,17 @@ namespace ParkingAPI.Services
         public async Task CheckinAsync(Guid companyId, Guid vehicleId)
         {
             _logger.LogInformation($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=Iniciando checki, trace={_trace.TraceId()}");
-
             var company = await _companyRepository.GetAsync(companyId);
             var vehicle = await _vehicleRepository.GetAsync(vehicleId);
-
-            string dataHoraString1 = "2024-02-20 23:39:45";
-            string dataHoraString2 = "2024-02-08 14:33:20";
-
-            DateTime dataHora1 = DateTime.ParseExact(dataHoraString1, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime dataHora2 = DateTime.ParseExact(dataHoraString2, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            dataHora1.AddDays(1);
-            var number = await _parkingRepository.GetTotalCarCheckinsByCompanyInTimeRange(company, dataHora2.Date, dataHora1.Date);
             CheckValidParameters(company, vehicle);
             var entity = await _parkingRepository.FindParkedVehicleAsync(companyId, vehicleId);
-
             if (entity != null)
             {
                 _logger.LogError($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=O Registro de estacionamento ja existe, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.VEHICLE_ALREADY_PARKED_EXCEPTION);
             }
             await CheckAvailableSpots(company, vehicle);
-
             entity = new ParkingEntiy(companyId, vehicleId);
-
-            // Converter as strings para DateTime
             _logger.LogInformation($"m=CheckinAsync, companyId={companyId}, vehicleId={vehicleId}, message=Finalizando checkin, trace={_trace.TraceId()}");
             await _parkingRepository.CheckinAsync(entity); 
         }
@@ -79,7 +63,6 @@ namespace ParkingAPI.Services
 
         public async Task<ParkingModel> FindParkedVehicleAsync(Guid companyId, Guid vehicleId)
         {
-
             _logger.LogInformation($"m=FindParkedVehicleAsync, companyId={companyId}, vehicleId={vehicleId}, message=Iniciando busca por veiculo estacionado, trace={_trace.TraceId()}");
             var entity = await _parkingRepository.FindParkedVehicleAsync(companyId, vehicleId);
             if (entity == null) 
@@ -92,8 +75,7 @@ namespace ParkingAPI.Services
         }
 
         private async Task CheckAvailableSpots(CompanyEntity company, VehicleEntity vehicle)
-        {
-            
+        {           
             var parkedVehicleByType = await _parkingRepository.GetNumberOfParkedVehicles(company, vehicle);  
             
             if (vehicle.typeVehicle == TypeVehicleEnum.Car && parkedVehicleByType == company.NumberCars)
@@ -122,7 +104,6 @@ namespace ParkingAPI.Services
                 _logger.LogError($"m=CheckValidParameters, message=Registro de veiculo nao encontrado, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.VEHICLE_NOT_FOUND_EXCEPTION);
             }
-
         }
     }
 }
