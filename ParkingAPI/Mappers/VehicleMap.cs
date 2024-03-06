@@ -1,4 +1,5 @@
-﻿using ParkingAPI.DTO;
+﻿using Microsoft.OpenApi.Extensions;
+using ParkingAPI.DTO;
 using ParkingAPI.Entities;
 using ParkingAPI.Models;
 using System.Drawing;
@@ -70,6 +71,21 @@ namespace ParkingAPI.Mappers
             };
 
             return model;
+        }
+
+        public static VehicleDTO EntityToDto(VehicleEntity entity)
+        {
+            VehicleDTO dto = new VehicleDTO()
+            {
+                Id = entity.Id,
+                Brand = entity.Brand,
+                Model = entity.Model,
+                Color = entity.Color,
+                Plate = entity.Plate,
+                typeVehicle = entity.typeVehicle,
+            };
+
+            return dto;
         }
     }
 }
