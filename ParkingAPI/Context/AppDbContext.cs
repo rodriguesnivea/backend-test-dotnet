@@ -29,6 +29,12 @@ namespace ParkingAPI.Context
                     .IsUnique();
             });
 
+            modelBuilder.Entity<CompanyEntity>(entity =>
+            {
+                entity.HasIndex(e => e.CNPJ)
+                    .IsUnique();
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }
