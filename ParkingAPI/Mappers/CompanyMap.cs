@@ -9,7 +9,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ParkingAPI.Mappers
 {
-    public class CompanyMap
+    public static class CompanyMap
     {
         public static CompanyEntity ModelToEntity(CompanyModel companyModel)
         {

@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace ParkingAPI.Mappers
 {
-    public class VehicleMap
+    public static class VehicleMap
     {
         public static VehicleEntity ModelToEntity(VehicleModel model)
         {

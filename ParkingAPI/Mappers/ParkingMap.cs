@@ -4,7 +4,7 @@ using ParkingAPI.Models;
 
 namespace ParkingAPI.Mappers
 {
-    public class ParkingMap
+    public static class ParkingMap
     {
         public static ParkingEntiy ModelToEntity(ParkingModel model)
         {
