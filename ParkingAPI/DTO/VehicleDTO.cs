@@ -26,6 +26,6 @@ namespace ParkingAPI.DTO
         public string Plate { get; set; }
 
         [Required]
-        public TypeVehicleEnum typeVehicle { get; set; }
+        public TypeVehicle typeVehicle { get; set; }
     }
 }

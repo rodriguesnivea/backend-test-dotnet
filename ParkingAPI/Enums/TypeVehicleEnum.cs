@@ -1,6 +1,6 @@
 ﻿namespace ParkingAPI.Enums
 {
-    public enum TypeVehicleEnum
+    public enum TypeVehicle
     {
         Car = 0,
         Motocycle = 1

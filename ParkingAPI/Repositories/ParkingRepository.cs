@@ -76,7 +76,7 @@ namespace ParkingAPI.Repositories
         {
             var count = await _DbSet
                .Include(p => p.Vehicle)
-               .Where(p => p.Vehicle.typeVehicle == TypeVehicleEnum.Car && p.CompanyId == companyId && p.CreateAT >= startTime && p.UpdateAt <= endTime)
+               .Where(p => p.Vehicle.typeVehicle == TypeVehicle.Car && p.CompanyId == companyId && p.CreateAT >= startTime && p.UpdateAt <= endTime)
                .CountAsync();
             return count;
         }
@@ -85,7 +85,7 @@ namespace ParkingAPI.Repositories
         {
             var count = await _DbSet
                 .Include(p => p.Vehicle)
-                .Where(p => p.Vehicle.typeVehicle == TypeVehicleEnum.Motocycle && p.CompanyId == companyId)
+                .Where(p => p.Vehicle.typeVehicle == TypeVehicle.Motocycle && p.CompanyId == companyId)
                 .CountAsync();
             return count;
         }
@@ -94,7 +94,7 @@ namespace ParkingAPI.Repositories
         {
             var count = await _DbSet
                .Include(p => p.Vehicle)
-               .Where(p => !p.IsParked && p.Vehicle.typeVehicle == TypeVehicleEnum.Car && p.CompanyId == companyId && p.CreateAT >= startTime && p.UpdateAt <= endTime)
+               .Where(p => !p.IsParked && p.Vehicle.typeVehicle == TypeVehicle.Car && p.CompanyId == companyId && p.CreateAT >= startTime && p.UpdateAt <= endTime)
                .CountAsync();
             return count;
         }
@@ -103,7 +103,7 @@ namespace ParkingAPI.Repositories
         {
             var count = await _DbSet
                .Include(p => p.Vehicle)
-               .Where(p => !p.IsParked && p.Vehicle.typeVehicle == TypeVehicleEnum.Car && p.CompanyId == companyId && p.CreateAT >= startTime && p.UpdateAt <= endTime)
+               .Where(p => !p.IsParked && p.Vehicle.typeVehicle == TypeVehicle.Car && p.CompanyId == companyId && p.CreateAT >= startTime && p.UpdateAt <= endTime)
                .CountAsync();
             return count;
         }

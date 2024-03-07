@@ -31,7 +31,7 @@ namespace Application.Tests.Service
         [Fact]
         public async void CreateAsync_CriaVeiculoComSucesso()
         {
-            var vehicleToBeSaved = new VehicleModel { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicleToBeSaved = new VehicleModel { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
             _vehicleRepositoryMock.Setup(repository => repository.PlateExist(vehicleToBeSaved.Plate)).ReturnsAsync(false);
             var result = await _vehicleService.CreateAsync(vehicleToBeSaved);
             Assert.NotNull(result);
@@ -47,7 +47,7 @@ namespace Application.Tests.Service
         [Fact]
         public async void CreateAsync_LancaExcecaoPlacaConflito()
         {
-            var vehicleToBeSaved = new VehicleModel { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicleToBeSaved = new VehicleModel { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
             _vehicleRepositoryMock.Setup(repository => repository.PlateExist(vehicleToBeSaved.Plate)).ReturnsAsync(true);
             var exception = await Assert.ThrowsAsync<ServiceException>(() => _vehicleService.CreateAsync(vehicleToBeSaved));
             Assert.Equal(ApplicationError.VEHICLE_PLATE_CONFLICT_EXCEPTION, exception.ApplicationError);
@@ -84,7 +84,7 @@ namespace Application.Tests.Service
         public async void GetAllAsync_BuscaVeiculosComSucesso()
         {
             var expected = new List<VehicleEntity> { new VehicleEntity
-            {Id = Guid.NewGuid(), Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car } };
+            {Id = Guid.NewGuid(), Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car } };
             _vehicleRepositoryMock.Setup(repository => repository.GetAllAsync()).ReturnsAsync(expected);
             var result = await _vehicleService.GetAllAsync();
             Assert.NotNull(result);
@@ -109,7 +109,7 @@ namespace Application.Tests.Service
         public async void GetAsync_BuscaVeiculoPorIdComSucesso()
         {
             var id = Guid.NewGuid();
-            var expected = new VehicleEntity { Id = Guid.NewGuid(), Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var expected = new VehicleEntity { Id = Guid.NewGuid(), Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
             _vehicleRepositoryMock.Setup(repository => repository.Exist(id)).ReturnsAsync(true);
             _vehicleRepositoryMock.Setup(repository => repository.GetAsync(id)).ReturnsAsync(expected);
 
@@ -137,8 +137,8 @@ namespace Application.Tests.Service
         public async void UpdateAsync_AtualizaTodosOsCamposExcetoPlacaDoVeiculoComSucesso()
         {
             var id = Guid.NewGuid();
-            var vehicleToBeSaved = new VehicleModel { Brand = "Corola", Model = "Medio", Color = "Cinza", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Motocycle };
-            var currentVehicle = new VehicleEntity { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicleToBeSaved = new VehicleModel { Brand = "Corola", Model = "Medio", Color = "Cinza", Plate = "ads-111", typeVehicle = TypeVehicle.Motocycle };
+            var currentVehicle = new VehicleEntity { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
             _vehicleRepositoryMock.Setup(repository => repository.Exist(id)).ReturnsAsync(true);
             _vehicleRepositoryMock.Setup(repository => repository.GetAsync(id)).ReturnsAsync(currentVehicle);
 
@@ -156,7 +156,7 @@ namespace Application.Tests.Service
         public async void UpdateAsync_LancaExcecaoVeiculoNaoEncontrado()
         {
             var id = Guid.NewGuid();
-            var vehicleToBeSaved = new VehicleModel { Brand = "Corola", Model = "Medio", Color = "Cinza", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Motocycle };
+            var vehicleToBeSaved = new VehicleModel { Brand = "Corola", Model = "Medio", Color = "Cinza", Plate = "ads-111", typeVehicle = TypeVehicle.Motocycle };
             _vehicleRepositoryMock.Setup(repository => repository.Exist(id)).ReturnsAsync(false);
             var exception = await Assert.ThrowsAsync<ServiceException>(() => _vehicleService.UpdateAsync(id, vehicleToBeSaved));
             Assert.Equal(ApplicationError.VEHICLE_NOT_FOUND_EXCEPTION, exception.ApplicationError);
@@ -166,9 +166,9 @@ namespace Application.Tests.Service
         public async void UpdateAsync_LancaExcecaoPlacaComConflitos()
         {
             var id = Guid.NewGuid();
-            var vehicleToBeSaved = new VehicleModel { Id = id, Brand = "Corola", Model = "Medio", Color = "Cinza", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Motocycle };
-            var currentVehicle = new VehicleEntity {Id = id, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-345", typeVehicle = TypeVehicleEnum.Car };
-            var vehicleFromPlate = new VehicleEntity {Id = Guid.NewGuid(), Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicleToBeSaved = new VehicleModel { Id = id, Brand = "Corola", Model = "Medio", Color = "Cinza", Plate = "ads-111", typeVehicle = TypeVehicle.Motocycle };
+            var currentVehicle = new VehicleEntity {Id = id, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-345", typeVehicle = TypeVehicle.Car };
+            var vehicleFromPlate = new VehicleEntity {Id = Guid.NewGuid(), Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
             _vehicleRepositoryMock.Setup(repository => repository.Exist(id)).ReturnsAsync(true);
             _vehicleRepositoryMock.Setup(repository => repository.GetAsync(id)).ReturnsAsync(currentVehicle);
             _vehicleRepositoryMock.Setup(repository => repository.GetByPlateAsync(vehicleToBeSaved.Plate)).ReturnsAsync(vehicleFromPlate);

@@ -40,7 +40,7 @@ namespace Application.Test.Services
             { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
             var company = new CompanyEntity
             { Id = idCompany, Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = address };
-            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
 
             var parkedVehicleByType = company.NumberCars - 2; 
             _CompanyRepositoryMock.Setup(repository => repository.GetAsync(idCompany)).ReturnsAsync(company);
@@ -93,7 +93,7 @@ namespace Application.Test.Services
             { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
             var company = new CompanyEntity
             { Id = idCompany, Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = address };
-            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
 
             _CompanyRepositoryMock.Setup(repository => repository.GetAsync(idCompany)).ReturnsAsync(company);
             _vehicleRepositoryMock.Setup(repository => repository.GetAsync(idVehicle)).ReturnsAsync(vehicle);
@@ -113,7 +113,7 @@ namespace Application.Test.Services
             { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
             var company = new CompanyEntity
             { Id = idCompany, Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = address };
-            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
+            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
 
             var parkedVehicleByType = company.NumberCars;
             _CompanyRepositoryMock.Setup(repository => repository.GetAsync(idCompany)).ReturnsAsync(company);
@@ -135,7 +135,7 @@ namespace Application.Test.Services
             { Street = "Pedro S. Delton", City = "Rio Branco", State = "Ceara", Country = "Brasil", Number = 123 };
             var company = new CompanyEntity
             { Id = idCompany, Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = address };
-            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Motocycle };
+            var vehicle = new VehicleEntity { Id = idVehicle, Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Motocycle };
 
             var parkedVehicleByType = company.NumberMotorcycies;
             _CompanyRepositoryMock.Setup(repository => repository.GetAsync(idCompany)).ReturnsAsync(company);

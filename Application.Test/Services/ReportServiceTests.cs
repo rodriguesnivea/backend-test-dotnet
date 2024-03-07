@@ -68,8 +68,8 @@ namespace Application.Test.Services
             var companyId = Guid.NewGuid();   
             var company = new CompanyEntity
             { Id = companyId, Name = "CAutomotiva", CNPJ = "12539922385646", NumberMotorcycies = 2, NumberCars = 3, Phone = "(95) 3970-4294", Address = null };
-            var vehicle1 = new VehicleEntity { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicleEnum.Car };
-            var vehicle2 = new VehicleEntity { Brand = "Bros", Model = "Grande", Color = "Azul", Plate = "ars-115", typeVehicle = TypeVehicleEnum.Motocycle };
+            var vehicle1 = new VehicleEntity { Brand = "Fiat", Model = "Grande", Color = "Azul", Plate = "ads-111", typeVehicle = TypeVehicle.Car };
+            var vehicle2 = new VehicleEntity { Brand = "Bros", Model = "Grande", Color = "Azul", Plate = "ars-115", typeVehicle = TypeVehicle.Motocycle };
             var parking1 = new ParkingEntiy {CompanyId = Guid.NewGuid(), Vehicle = vehicle1, VehicleId = Guid.NewGuid(), CreateAT = DateTime.Now, UpdateAt = DateTime.Now };
             var parking2 = new ParkingEntiy {CompanyId = Guid.NewGuid(), Vehicle = vehicle2, VehicleId = Guid.NewGuid(), CreateAT = DateTime.Now, UpdateAt = DateTime.Now };
             var parkings = new List<ParkingEntiy>();

@@ -29,7 +29,7 @@ namespace ParkingAPI.Controllers
         [HttpPost("{companyId}/vehicles/{vehicleId}/check-out")]
         public async Task<IActionResult> CheckOut(Guid companyId, Guid vehicleId)
         {
-            var result = await _parkingService.CheckoutAsync(companyId, vehicleId);
+            await _parkingService.CheckoutAsync(companyId, vehicleId);
             return Ok();
         }
     }

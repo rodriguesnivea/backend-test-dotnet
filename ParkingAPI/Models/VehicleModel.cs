@@ -30,7 +30,7 @@ namespace ParkingAPI.Models
 
         [Required]
         [Column("type_vehicle")]
-        public TypeVehicleEnum typeVehicle { get; set; }
+        public TypeVehicle typeVehicle { get; set; }
 
     }
 }

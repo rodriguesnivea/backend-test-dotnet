@@ -78,13 +78,13 @@ namespace ParkingAPI.Services
         {           
             var parkedVehicleByType = await _parkingRepository.GetNumberOfParkedVehicles(company, vehicle);  
             
-            if (vehicle.typeVehicle == TypeVehicleEnum.Car && parkedVehicleByType == company.NumberCars)
+            if (vehicle.typeVehicle == TypeVehicle.Car && parkedVehicleByType == company.NumberCars)
             {
                 _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Nenhuma vaga para carro disponivel, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.FILLED_CAR_SPOTS_EXCEPTION);
             }
             
-            if(vehicle.typeVehicle == TypeVehicleEnum.Motocycle && parkedVehicleByType == company.NumberMotorcycies) 
+            if(vehicle.typeVehicle == TypeVehicle.Motocycle && parkedVehicleByType == company.NumberMotorcycies) 
             {
                 _logger.LogError($"m=CheckoutAsync, companyId={company.Id}, vehicleId={vehicle.Id}, message=Nenhuma vaga para moto disponivel, trace={_trace.TraceId()}");
                 throw new ServiceException(ApplicationError.FILLED_MOTORCYCLE_SPOTS_EXCEPTION);
