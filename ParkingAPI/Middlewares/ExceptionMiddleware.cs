@@ -44,7 +44,7 @@ namespace ParkingAPI.Middlewares
             {
                 ApplicationError applicationError = ApplicationError.INTERNAL_SERVER_ERROR;
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)(int)applicationError.StatusCode;
+                context.Response.StatusCode = (int)applicationError.StatusCode;
                 await context.Response.WriteAsync(
                     new ErrorResponse(applicationError.Message, (int)applicationError.StatusCode, applicationError.Code).ToString()
                 );
