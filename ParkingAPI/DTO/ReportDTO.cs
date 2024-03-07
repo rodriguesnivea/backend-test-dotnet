@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ParkingAPI.DTO
 {
-    public class ReportDTO
+    public class ReportDto
     {
         public Guid CompanyId { get; set; }
         public string CompanyName { get; set; }

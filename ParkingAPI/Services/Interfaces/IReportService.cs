@@ -6,7 +6,7 @@ namespace ParkingAPI.Services.Interfaces
 {
     public interface IReportService
     {
-        Task<DetaildReportDTO> GetDetaildReportAsync(Guid companyId, DateTime StartTime, DateTime EndTime);
-        Task<ReportDTO> GetdReportAsync(Guid companyId);
+        Task<DetaildReportDto> GetDetaildReportAsync(Guid companyId, DateTime StartTime, DateTime EndTime);
+        Task<ReportDto> GetdReportAsync(Guid companyId);
     }
 }

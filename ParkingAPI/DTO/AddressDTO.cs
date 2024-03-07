@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ParkingAPI.DTO
 {
-    public class AddressDTO
+    public class AddressDto
     {
         [Required]
         [StringLength(100)]

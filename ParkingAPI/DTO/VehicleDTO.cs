@@ -5,7 +5,7 @@ using System;
 
 namespace ParkingAPI.DTO
 {
-    public class VehicleDTO
+    public class VehicleDto
     {
         public Guid Id { get; set; }
 

@@ -45,18 +45,18 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> Post([FromBody] CompanyDTO companyDTO)
+        public async Task<IActionResult> Post([FromBody] CompanyDto CompanyDto)
         {
             if(!ModelState.IsValid) return BadRequest();
-            var response = await _companyService.CreateAsync(CompanyMap.DtoToModel(companyDTO));
+            var response = await _companyService.CreateAsync(CompanyMap.DtoToModel(CompanyDto));
             return CreatedAtAction(nameof(Get), new { id = response.Id }, CompanyMap.ModelToDto(response));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] CompanyDTO companyDTO)
+        public async Task<IActionResult> Put(Guid id, [FromBody] CompanyDto CompanyDto)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var updatedCompany = (await _companyService.UpdateAsync(id, CompanyMap.DtoToModel(companyDTO)));
+            var updatedCompany = (await _companyService.UpdateAsync(id, CompanyMap.DtoToModel(CompanyDto)));
             return Ok(CompanyMap.ModelToDto(updatedCompany));
         }
     }

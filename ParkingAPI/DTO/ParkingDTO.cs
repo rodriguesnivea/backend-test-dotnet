@@ -2,9 +2,9 @@
 
 namespace ParkingAPI.DTO
 {
-    public class ParkingDTO
+    public class ParkingDto
     {
-        public CompanyDTO Company { get; set; }
-        public VehicleDTO Vehicle { get; set; }
+        public CompanyDto Company { get; set; }
+        public VehicleDto Vehicle { get; set; }
     }
 }

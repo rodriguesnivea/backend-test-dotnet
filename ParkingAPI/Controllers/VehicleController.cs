@@ -41,7 +41,7 @@ namespace ParkingAPI.Controllers
             return Ok();
         }
         [HttpPost()]
-        public async Task<IActionResult> Post([FromBody] VehicleDTO vehicle)
+        public async Task<IActionResult> Post([FromBody] VehicleDto vehicle)
         {
             if (!ModelState.IsValid) return BadRequest();
             var response = await _vehicleService.CreateAsync(VehicleMap.DtoToModel(vehicle));
@@ -49,7 +49,7 @@ namespace ParkingAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] VehicleDTO vehicle)
+        public async Task<IActionResult> Put(Guid id, [FromBody] VehicleDto vehicle)
         {
             if (!ModelState.IsValid) return BadRequest();
             var updatedVehicle = (await _vehicleService.UpdateAsync(id,VehicleMap.DtoToModel(vehicle)));

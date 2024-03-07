@@ -28,13 +28,13 @@ namespace ParkingAPI.Services
             _trace = trace;
         }
 
-        public async Task<ReportDTO> GetdReportAsync(Guid companyId)
+        public async Task<ReportDto> GetdReportAsync(Guid companyId)
         {
             _logger.LogInformation($"m=GetdReportAsync, message=Iniciando consulta ao relatorio de estacionamento, trace={_trace.TraceId()}");
             CompanyEntity company = await FindCompany(companyId);
             int totalCheckin = await _parkingRepository.GetTotalVehicleCheckinsByCompany(companyId);
             int totalCheckout = await _parkingRepository.GetTotalVehicleCheckoutsByCompany(companyId);
-            var reportDTO = new ReportDTO
+            var reportDTO = new ReportDto
             {
                 CompanyId = company.Id,
                 CompanyName = company.Name,
@@ -46,7 +46,7 @@ namespace ParkingAPI.Services
             _logger.LogInformation($"m=GetdReportAsync, message=Finalizando consulta ao relatorio de estacionamento, trace={_trace.TraceId()}");
             return reportDTO;
         }
-        public async Task<DetaildReportDTO> GetDetaildReportAsync(Guid companyId, DateTime startTime, DateTime endTime)
+        public async Task<DetaildReportDto> GetDetaildReportAsync(Guid companyId, DateTime startTime, DateTime endTime)
         {
             _logger.LogInformation($"m=GetDetaildReportAsync, message=Iniciando consulta ao relatorio detalhado de estacionamento, trace={_trace.TraceId()}");
             CompanyEntity company = await FindCompany(companyId);
@@ -57,14 +57,14 @@ namespace ParkingAPI.Services
             int totalCheckoutMotorcycle = await _parkingRepository.GetTotalMotorcycleCheckoutsByCompanyInTimeRange(companyId, startTime, endTime);
             var parkings = await _parkingRepository.GetParkingHistoryByCompanyInTimeRange(companyId, startTime, endTime);
             var parkingHistory = parkings
-                .Select(p => new ParkingHistoryDTO
+                .Select(p => new ParkingHistoryDto
                 {
                     Vehicle = VehicleMap.EntityToDto(p.Vehicle),
                     DateCheckin = p.CreateAT,
                     DateCheckout = p.UpdateAt
                 }).ToList();
 
-            var detaildReportDTO = new DetaildReportDTO
+            var DetaildReportDto = new DetaildReportDto
             {
                 CompanyId = company.Id,
                 CompanyName = company.Name,
@@ -77,7 +77,7 @@ namespace ParkingAPI.Services
             };
 
             _logger.LogInformation($"m=GetDetaildReportAsync, message=Finalizando consulta ao relatorio detalhado de estacionamento, trace={_trace.TraceId()}");
-            return detaildReportDTO;
+            return DetaildReportDto;
         }
 
         private (DateTime, DateTime) HandleTimeRanger(DateTime startTime, DateTime endTime)

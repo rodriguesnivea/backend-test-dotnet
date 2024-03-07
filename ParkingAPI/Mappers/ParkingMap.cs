@@ -39,7 +39,7 @@ namespace ParkingAPI.Mappers
         }
 
 
-        public static ParkingModel DtoToModel(ParkingDTO dto)
+        public static ParkingModel DtoToModel(ParkingDto dto)
         {
             ParkingModel model = new ParkingModel()
             {
@@ -48,9 +48,9 @@ namespace ParkingAPI.Mappers
             return model;
         }
 
-        public static ParkingDTO ModelToDto(ParkingModel model)
+        public static ParkingDto ModelToDto(ParkingModel model)
         {
-            ParkingDTO dto = new ParkingDTO()
+            ParkingDto dto = new ParkingDto()
             {
                 
             };

@@ -4,7 +4,7 @@ using System;
 
 namespace ParkingAPI.DTO
 {
-    public class CompanyDTO
+    public class CompanyDto
     {
         public Guid Id { get; set; }
 
@@ -29,6 +29,6 @@ namespace ParkingAPI.DTO
         public string Phone { get; set; }
 
         [Required()]
-        public AddressDTO Address { get; set; }
+        public AddressDto Address { get; set; }
     }
 }

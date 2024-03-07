@@ -46,24 +46,24 @@ namespace ParkingAPI.Mappers
             return model;
         }
 
-        public static CompanyModel DtoToModel(CompanyDTO companyDTO)
+        public static CompanyModel DtoToModel(CompanyDto CompanyDto)
         {
             CompanyModel model = new CompanyModel()
             {
-                Id = companyDTO.Id,
-                Name = companyDTO.Name,
-                CNPJ = companyDTO.CNPJ,
-                NumberMotorcycies = companyDTO.NumberMotorcycies,
-                NumberCars = companyDTO.NumberCars,
-                Phone = companyDTO.Phone,
-                Address = AddressDtoToAddressModel(companyDTO.Address)
+                Id = CompanyDto.Id,
+                Name = CompanyDto.Name,
+                CNPJ = CompanyDto.CNPJ,
+                NumberMotorcycies = CompanyDto.NumberMotorcycies,
+                NumberCars = CompanyDto.NumberCars,
+                Phone = CompanyDto.Phone,
+                Address = AddressDtoToAddressModel(CompanyDto.Address)
             };
             return model;
         }
 
-        public static CompanyDTO ModelToDto(CompanyModel companyModel)
+        public static CompanyDto ModelToDto(CompanyModel companyModel)
         {
-            CompanyDTO dto = new CompanyDTO()
+            CompanyDto dto = new CompanyDto()
             {
                 Id = companyModel.Id,
                 Name = companyModel.Name,
@@ -110,23 +110,23 @@ namespace ParkingAPI.Mappers
             return model;
         }
 
-        private static AddressModel AddressDtoToAddressModel(AddressDTO addressDTO)
+        private static AddressModel AddressDtoToAddressModel(AddressDto AddressDto)
         {
             AddressModel model = new AddressModel()
             {
-                Street = addressDTO.Street,
-                City = addressDTO.City,
-                State = addressDTO.State,
-                Country = addressDTO.Country,
-                Number = addressDTO.Number,
+                Street = AddressDto.Street,
+                City = AddressDto.City,
+                State = AddressDto.State,
+                Country = AddressDto.Country,
+                Number = AddressDto.Number,
             };
 
             return model;
         }
 
-        private static AddressDTO AddressModelToDto(AddressModel addressModel)
+        private static AddressDto AddressModelToDto(AddressModel addressModel)
         {
-            AddressDTO dto = new AddressDTO()
+            AddressDto dto = new AddressDto()
             {
                 Street = addressModel.Street,
                 City = addressModel.City,

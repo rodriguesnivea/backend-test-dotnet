@@ -42,9 +42,9 @@ namespace ParkingAPI.Mappers
             return model;
         }
 
-        public static VehicleDTO ModelToDto (VehicleModel model)
+        public static VehicleDto ModelToDto (VehicleModel model)
         {
-            VehicleDTO dto = new VehicleDTO()
+            VehicleDto dto = new VehicleDto()
             {
                 Id = model.Id,  
                 Color = model.Color,
@@ -58,7 +58,7 @@ namespace ParkingAPI.Mappers
             return dto;
         }
 
-        public static VehicleModel DtoToModel(VehicleDTO dto)
+        public static VehicleModel DtoToModel(VehicleDto dto)
         {
             VehicleModel model = new VehicleModel()
             {
@@ -73,9 +73,9 @@ namespace ParkingAPI.Mappers
             return model;
         }
 
-        public static VehicleDTO EntityToDto(VehicleEntity entity)
+        public static VehicleDto EntityToDto(VehicleEntity entity)
         {
-            VehicleDTO dto = new VehicleDTO()
+            VehicleDto dto = new VehicleDto()
             {
                 Id = entity.Id,
                 Brand = entity.Brand,

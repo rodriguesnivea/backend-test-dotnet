@@ -2,9 +2,9 @@
 
 namespace ParkingAPI.DTO
 {
-    public class ParkingHistoryDTO
+    public class ParkingHistoryDto
     {
-        public VehicleDTO Vehicle { get; set;}
+        public VehicleDto Vehicle { get; set;}
         public DateTime? DateCheckin{ get; set;}
         public DateTime? DateCheckout { get; set;}
         
