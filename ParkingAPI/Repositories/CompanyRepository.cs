@@ -35,10 +35,10 @@ namespace ParkingAPI.Repositories
             return await _DbSet.Include(company => company.Address).ToListAsync();
         }
 
-        public async Task<CompanyEntity> UpdateCompanyAsync(CompanyEntity updatedEntity)
+        public async Task<CompanyEntity> UpdateCompanyAsync(CompanyEntity entity)
         {
-            var entityFromDatabase = await _DbSet.Include(company => company.Address).FirstOrDefaultAsync(p => p.Id == updatedEntity.Id);
-            CompanyMap.TransferDataEntity(updatedEntity, entityFromDatabase);
+            var entityFromDatabase = await _DbSet.Include(company => company.Address).FirstOrDefaultAsync(p => p.Id == entity.Id);
+            CompanyMap.TransferDataEntity(entity, entityFromDatabase);
             await _Context.SaveChangesAsync();
             return entityFromDatabase;
         }
