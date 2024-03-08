@@ -11,6 +11,6 @@ namespace ParkingAPI.Repositories.Interfaces
         Task<List<CompanyEntity>> FindAllAsync();
         Task<CompanyEntity> UpdateCompanyAsync(CompanyEntity entity);
         Task<bool> CnpjExist(string cnpj);
-        Task<CompanyEntity> GetByCnpjAsync(string plate);
+        Task<CompanyEntity> GetByCnpjAsync(string cnpj);
     }
 }
