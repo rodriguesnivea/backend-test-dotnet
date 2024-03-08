@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ParkingAPI.Repositories.Interfaces
 {
-    public interface ICompanyRepository : IBaseRepository<CompanyEntity> // HERDA IBaseRepository
+    public interface ICompanyRepository : IBaseRepository<CompanyEntity>
     {
         Task DeleteCompanyAsync(Guid id);
         Task<List<CompanyEntity>> FindAllAsync();
