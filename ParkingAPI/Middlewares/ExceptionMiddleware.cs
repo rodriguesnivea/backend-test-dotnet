@@ -25,30 +25,26 @@ namespace ParkingAPI.Middlewares
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
+                _logger.LogError(ex, "Something went wrong.");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            if(exception is ServiceException)
-            {
-                ApplicationError applicationError = ((ServiceException)exception).ApplicationError;
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)applicationError.StatusCode;
-                await context.Response.WriteAsync(
-                    new ErrorResponse(applicationError.Message, (int)applicationError.StatusCode, applicationError.Code).ToString()
-                );
-            } 
-            else
-            {
-                ApplicationError applicationError = ApplicationError.INTERNAL_SERVER_ERROR;
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)applicationError.StatusCode;
-                await context.Response.WriteAsync(
-                    new ErrorResponse(applicationError.Message, (int)applicationError.StatusCode, applicationError.Code).ToString()
-                );
-            }
+            ApplicationError applicationError = DefineApplicationError(exception);
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)applicationError.StatusCode;
+            await context.Response.WriteAsync(
+                new ErrorResponse(applicationError.Message, (int)applicationError.StatusCode, applicationError.Code).ToString()
+            );
+        }
+
+        private static ApplicationError DefineApplicationError(Exception exception)
+        {
+            var error = ((ServiceException)exception)?.ApplicationError;
+            if(error != null)
+                return error;
+            return ApplicationError.INTERNAL_SERVER_ERROR;
         }
     }
 }
