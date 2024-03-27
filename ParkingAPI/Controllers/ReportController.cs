@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ParkingAPI.Services.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParkingAPI.Controllers
 {
+    [Authorize]
     [Route("api/v1/reports")]
     public class ReportController : ControllerBase
     {

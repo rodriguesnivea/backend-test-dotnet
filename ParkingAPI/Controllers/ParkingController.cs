@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ParkingAPI.Exceptions;
 using ParkingAPI.Repositories.Interfaces;
 using ParkingAPI.Services.Interfaces;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ParkingAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/companies")]
     public class ParkingController : ControllerBase
