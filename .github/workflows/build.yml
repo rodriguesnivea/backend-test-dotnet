@@ -45,5 +45,4 @@ jobs:
         run: |
           dotnet sonarscanner begin /k:"rodriguesnivea_backend-test-dotnet" /o:"rodriguesnivea" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build .\ParkingAPI.sln
-          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
